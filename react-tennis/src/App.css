@@ -1,0 +1,10 @@
+.App {
+  background: #eeeeee;
+  padding: 5%;
+  height: 100vh;
+}
+
+.icon:hover {
+  text-decoration: underline;
+  color: rgb(78, 234, 255);
+}
