@@ -1,4 +1,4 @@
-const config = require('dotenv').config({ path: '../.env' });
+const config = require('dotenv').config({ path: './.env' });
 const express = require('express');
 const Twitter = require('twitter');
 const path = require('path');
