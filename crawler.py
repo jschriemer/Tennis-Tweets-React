@@ -12,7 +12,7 @@ from selenium.webdriver.common.keys import Keys
 chrome_path = r'/usr/local/bin/chromedriver' #path from 'which chromedriver'
 driver = webdriver.Chrome(executable_path=chrome_path)
 config = configparser.ConfigParser()
-config.read('db.ini')
+config.read('.ini')
 
 class TwitterBot:
     def __init__(self,username,password):
