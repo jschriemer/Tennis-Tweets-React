@@ -8,3 +8,18 @@
   text-decoration: underline;
   color: rgb(78, 234, 255);
 }
+
+img{
+  width: 30px;
+}
+
+h3{
+  text-align: center;
+  color: rgb(0, 184, 230);
+  font-size: 1.5em;
+}
+
+#stat{
+  text-align: center;
+  color: grey;
+}
