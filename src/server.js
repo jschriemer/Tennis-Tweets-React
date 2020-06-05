@@ -1,22 +1,29 @@
-const config = require('dotenv').config({ path: '../.env' });
 const express = require('express');
 const Twitter = require('twitter');
 const path = require('path');
 const app = express();
 var cors = require('cors')
+var crawler = require('./crawler.js');
+ 
+crawler.crawl().catch(function (err) {
+  console.log("Error running crawler.js");
+  console.log(err)
+  });
 
 const client = new Twitter({
-  consumer_key: process.env.TWITTER_CONSUMER_KEY,
-  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-  access_token_key: process.env.TWITTER_ACCESS_TOKEN,
-  access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
+  consumer_key: "",
+  consumer_secret: "",
+  access_token_key: "",
+  access_token_secret: ""
 });
+
 app.use(cors())
 app.use(express.static(path.join(__dirname, 'build')));
 
 app.get('/ping', function (req, res) {
  return res.send('pong');
 });
+
 
 var params = {screen_name: 'Tennisscores2'};
 console.log("loading followers..")
@@ -25,6 +32,9 @@ client.get('followers/ids', params, function(error, tweets, response) {
     follow_count = tweets.ids.length
   }
 });
+
+
+
 console.log("loading tweets..")
 var params2 = {screen_name: 'Tennisscores2', q: 'Tennisscores2'};
 client.get('users/search', params2, function(error, tweets2, response) {
@@ -34,37 +44,17 @@ client.get('users/search', params2, function(error, tweets2, response) {
   }
 });
 
-var spawn = require('child_process').spawn,
-    ls    = spawn('python3',['crawler.py']);
 
-output = ''
-ls.stdout.on('data', (chunk) => {
-  output += chunk.toString();
-  console.log("DATA LOADED")
-  newtext = output.split("\n")
-  
-});
-
-ls.stderr.on('data', function (data) {
-    console.log('stderr: ' + data);
-    
-});
-app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+console.log("sending over data..")
+app.get('/', async function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'))
   res.send({follow_count: follow_count, 
             tweet_count: tweet_count,
-          tweet_impressions: newtext[0].replace(/['"]+/g, ''),
-        profile_visits: newtext[1].replace(/['"]+/g, '')});
+          tweet_impressions: crawler.twt(),
+         profile_visits: crawler.pro()
+  })
+  res.end();
 });
 
-
-function getTime() {
-  var tempDate = new Date();
-  var date = tempDate.getFullYear() + '-' + (tempDate.getMonth()+1) + '-' + tempDate.getDate();
-  console.log("it is currently: " + date)
-  return (
-    date
-  );
-}
  
-app.listen(process.env.PORT || 8080);
+app.listen(8080);

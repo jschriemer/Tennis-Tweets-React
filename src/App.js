@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import './App.css';
 import { FaGithub, FaTwitter, FaReact , FaPython} from "react-icons/fa";
-import { Timeline } from 'react-twitter-widgets'
+import axios from 'axios';
+import { Timeline, Follow } from 'react-twitter-widgets'
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
+
+const delay = interval => new Promise(resolve => setTimeout(resolve, interval));
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,17 +30,22 @@ function App() {
   const classes = useStyles();
   const [data, setData] = useState({});
   const [hasError, setErrors] = useState(false);
+  console.log(data.tweet_impressions)
 
   useEffect(() => {
     async function fetchData() {
-      const res = await fetch("http://localhost:8080/");
+      console.log(data.tweet_impressions)
+      const res = await fetch("https://dbf5f47e298a.ngrok.io");
       res
         .json()
         .then(res => setData(res))
         .catch(err => setErrors(err));
+        await delay(10000);
     }
-
-    fetchData();
+    console.log(data.tweet_impressions)
+    if(data.tweet_impressions == null){
+      fetchData();
+    }
   });
 
   return (
@@ -90,7 +98,7 @@ function App() {
             height: '550',
             width: '300'
           }}
-          onLoad={() => console.log('Timeline is loaded! :)')}
+          onLoad={() => console.log('Timeline is loaded! :)' + data)}
           />
         </Paper>
         </Grid>
