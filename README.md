@@ -3,8 +3,8 @@
 
 [https://tennis-tweets2.web.app/](https://tennis-tweets2.web.app/)
 
-Little website with some information and statistics from my twitter bot. The sit is built with React and Express, and hosted using Firebase. 
+Website with some information and statistics from my twitter bot. The site is built with React and Express, and hosted using Firebase. 
 
-I used the Twitter API for some statistics, and a selenium webcrawler for the rest. 
+I used the Twitter API and selenium webdriver for the statistics. 
 
 ![alt text](http://cliparts.co/cliparts/Lid/jMy/LidjMy5dT.svg)
